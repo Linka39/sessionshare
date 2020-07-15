@@ -1,0 +1,28 @@
+server:
+  port: 8078
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: utf-8
+
+spring:
+  session:
+    store-type: redis #指定redis实现spring session
+    timeout: PT1H # Session 过期时间， PT开头  ‘D’ – 天?  ‘H’ – 小时? ‘M’ – 分钟?‘S’ – 秒?
+    redis:
+      flush-mode: on_save # Sessions刷新模式  on_save http response为committed才提交 immediate 立即提交
+      namespace: linka39  # session 存储命名空间
+  thymeleaf:
+    cache: false
+  redis:
+    host: 172.18.0.7
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8  # 连接池中的最大空闲连接
+        min-idle: 0  # 连接池中的最小空闲连接
+      shutdown-timeout: 100  # 连接超时时间（毫秒）
+
