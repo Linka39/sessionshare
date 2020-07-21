@@ -1,22 +1,22 @@
 package com.linka39.util;
 
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.util.Date;
+
+import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 public class TestQuartz {
     public static void main(String[] args) throws Exception{
-        //jobDataMap("iloveYou@aini.com");
+        jobDataMap("iloveYou@aini.com");
 //        databaseCurrentJob();
 //        exceptionHandle2();
         //exceptionHandle1();
-        stop();
+//        stop();
     }
     private static void stop() throws Exception {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -127,11 +127,29 @@ public class TestQuartz {
     private static void jobDataMap(String mail) throws SchedulerException, InterruptedException {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 
-        Trigger trigger = newTrigger().withIdentity("trigger1", "group1")
+ /*       Trigger trigger = newTrigger().withIdentity("trigger1", "group1")
                 .startNow()
                 .withSchedule(simpleSchedule()
                         .withIntervalInSeconds(2)
                         .withRepeatCount(10))
+                .build();*/
+        //下一秒的5倍
+        //Date startTime = DateBuilder.nextGivenSecondDate(null, 5);
+        //获取在10秒后 定时运行
+        Date startTime = DateBuilder.futureDate(4, DateBuilder.IntervalUnit.SECOND);
+/*        SimpleTrigger trigger = (SimpleTrigger)newTrigger().withIdentity("trigger1", "group1")
+                .startAt(startTime)
+                //无限重复，间隔1
+                .withSchedule(simpleSchedule()
+                        .repeatForever()
+                        .withIntervalInSeconds(1))
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(2)
+                        .withRepeatCount(3))
+                .build();*/
+
+        CronTrigger trigger = newTrigger().withIdentity("trigger1", "group1").
+                withSchedule(cronSchedule("0/2 * * * * ?"))
                 .build();
 
         //定义一个JobDetail
@@ -143,9 +161,17 @@ public class TestQuartz {
         //用JobDataMap 修改email
         job.getJobDataMap().put("email", mail);
 
-        //调度加入这个job
-        scheduler.scheduleJob(job, trigger);
+       /*
+       //调度加入这个job
+        scheduler.scheduleJob(job, trigger);*/
 
+        // schedule it to run!
+        Date ft = scheduler.scheduleJob(job, trigger);
+
+        System.out.println("当前时间是：" + new Date().toLocaleString());
+        System.out.println("使用的Cron表达式是："+trigger.getCronExpression());
+     /*   System.out.printf("%s 这个任务会在 %s 准时开始运行，累计运行%d次，间隔时间是%d毫秒%n",
+                job.getKey(), ft.toLocaleString(), trigger.getRepeatCount()+1, trigger.getRepeatInterval());*/
         //启动
         scheduler.start();
 

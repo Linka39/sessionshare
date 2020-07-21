@@ -1,10 +1,8 @@
 package com.linka39.util;
 
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.*;
 
+@DisallowConcurrentExecution
 public class DatabaseBackupJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         JobDetail detail = context.getJobDetail();
