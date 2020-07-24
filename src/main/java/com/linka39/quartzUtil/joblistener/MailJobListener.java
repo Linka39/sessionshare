@@ -1,4 +1,4 @@
-package com.linka39.util.joblistener;
+package com.linka39.quartzUtil.joblistener;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

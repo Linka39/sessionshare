@@ -1,4 +1,4 @@
-package com.linka39.util;
+package com.linka39.quartzUtil;
 
 import org.quartz.*;
 

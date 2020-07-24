@@ -1,6 +1,6 @@
-package com.linka39.util;
+package com.linka39.quartzUtil;
 
-import com.linka39.util.joblistener.MailJobListener;
+import com.linka39.quartzUtil.joblistener.MailJobListener;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.KeyMatcher;
